@@ -1,0 +1,37 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.sqlite3
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# Jupyter / IPython
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# --- Kivy ---
+*.kv~         # backups de editores
+*.ini         # configs de usuario
+*.db          # bases temporales
+.kivy/
+
+# --- VSCode ---
+.vscode/
+.history/
+
+# --- SO ---
+# macOS
+.DS_Store
+# Linux
+*.swp
+*~
+# Windows
+Thumbs.db

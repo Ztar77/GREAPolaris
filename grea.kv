@@ -1,0 +1,251 @@
+ScreenManager:
+    MenuScreen:
+    ConexionScreen:
+    CalibracionScreen:
+    CarreraScreen:
+
+<MenuScreen>:
+    name: "menu"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1   # Fondo blanco opaco
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 20
+        padding: 40
+
+        Label:
+            text: "GREA — Carreras App"
+            font_size: "50sp"
+            color: 0, 0.3, 0.7, 1   # Azul
+
+        Button:
+            text: "Conectar"
+            background_normal: ""
+            background_color: 0, 0.3, 0.7, 1   # Azul
+            color: 1, 1, 1, 1                  # Texto blanco
+            size_hint: (1, 0.2)
+            on_release: app.root.current = "conexion"
+
+        Button:
+            text: "Calibración"
+            background_normal: ""
+            background_color: 0, 0.3, 0.7, 1
+            color: 1, 1, 1, 1
+            size_hint: (1, 0.2)
+            on_release: app.root.current = "calibracion"
+
+        Button:
+            text: "Carrera"
+            background_normal: ""
+            background_color: 0, 0.3, 0.7, 1
+            color: 1, 1, 1, 1
+            size_hint: (1, 0.2)
+            on_release: app.root.current = "carrera"
+
+        Button:
+            text: "Salir"
+            background_normal: ""
+            background_color: 0.3, 0.3, 0.3, 1   # Gris oscuro
+            color: 1, 1, 1, 1
+            size_hint: (1, 0.2)
+            on_release: app.stop()
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: (1, 0.3)
+            spacing: 20
+            padding: [0, 10]
+
+            Image:
+                source: "imagenes/GREA_Logo.png"
+                allow_stretch: True
+                keep_ratio: True
+                size_hint: (0.5, 1)
+
+            Image:
+                source: "imagenes/utnlariojalogo.png"
+                allow_stretch: True
+                keep_ratio: True
+                size_hint: (0.3, 0.7)   # Más chico que el otro
+
+        Label:
+            text: "© 2025 GREA Heaviside — Todos los derechos reservados"
+            font_size: "14sp"
+            color: 0.2, 0.2, 0.2, 1
+            size_hint: (1, 0.1)
+            halign: "center"
+            valign: "middle"
+
+<ConexionScreen>:
+    name: "conexion"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1   # Fondo blanco opaco
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 20
+        padding: 40
+
+        Label:
+            text: "Conexión con el ESP32"
+            font_size: "28sp"
+            color: 0, 0.3, 0.7, 1   # Azul
+
+        TextInput:
+            id: mac_input
+            hint_text: "Ingrese la MAC del ESP32 (ej: 38:18:2B:8A:F0:1A)"
+            multiline: False
+            size_hint: (1, 0.15)
+
+        Button:
+            text: "Conectar"
+            background_normal: ""
+            background_color: 0, 0.6, 0.2, 1
+            color: 1, 1, 1, 1
+            size_hint: (1, 0.15)
+            on_release: app.connect_bt(mac_input.text)
+
+        Label:
+            id: status_label
+            text: " "
+            font_size: "20sp"
+            color: 0.2, 0.2, 0.2, 1
+
+        Button:
+            text: "Volver al Menú"
+            background_normal: ""
+            background_color: 0.3, 0.3, 0.3, 1
+            color: 1, 1, 1, 1
+            size_hint: (1, 0.15)
+            on_release: 
+                app.root.current = "menu"
+                app.reset_status_label()
+
+
+<CalibracionScreen>:
+    name: "calibracion"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1   # Fondo blanco opaco
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 1
+        padding: 10
+
+        Label:
+            text: "Calibración y PID"
+            font_size: "18sp"
+            color: 0, 0.3, 0.7, 1   # Azul
+
+        GridLayout:
+            cols: 2
+            spacing: 7
+            size_hint_y: 0.4
+
+            Label:
+                text: "Kp:"
+                color: 0, 0.3, 0.7, 1   # Azul
+            TextInput:
+                id: kp_input
+                text: "1.0"
+                multiline: False
+
+            Label:
+                text: "Ti:"
+                color: 0, 0.3, 0.7, 1   # Azul
+            TextInput:
+                id: ti_input
+                text: "0.5"
+                multiline: False
+
+            Label:
+                text: "Td:"
+                color: 0, 0.3, 0.7, 1   # Azul
+            TextInput:
+                id: td_input
+                text: "0.1"
+                multiline: False
+
+            Label:
+                text: "Vmax:"
+                color: 0, 0.3, 0.7, 1   # Azul
+            TextInput:
+                id: vmax_input
+                text: "200"
+                multiline: False
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: 15
+            size_hint_y: 0.2
+
+            Button:
+                text: "Setear"
+                on_release: app.set_pid(kp_input.text, ti_input.text, td_input.text, vmax_input.text)
+
+            Button:
+                text: "Obtener"
+                on_release: app.get_pid()
+
+        Label:
+            text: "Centroide en tiempo real"
+            id: centroide_label
+            font_size: "18sp"
+            color: 0.1,0.1,0.1,1
+
+        Graph:
+            id: centroide_graph
+            xlabel: "t (ms)"
+            ylabel: "C (mm)"
+            xmin: 0
+            xmax: 100
+            ymin: -30
+            ymax: 30
+            x_ticks_minor: 5
+            x_ticks_major: 10
+            y_ticks_major: 10
+            y_grid_label: True
+            x_grid_label: True
+            padding: 5
+            size_hint_y: 0.4
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: 15
+            size_hint_y: 0.2
+
+            Button:
+                text: "Arrancar"
+                background_color: 0,0.7,0,1
+                on_release: app.enviar_comando("A")
+
+            Button:
+                text: "Parar"
+                background_color: 0.7,0,0,1
+                on_release: app.enviar_comando("B")
+            
+            Button:
+                text: "Volver al menú"
+                on_release: app.root.current = "menu"
+
+
+<CarreraScreen>:
+    name: "carrera"
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: "Pantalla de carrera"
+        Button:
+            text: "Volver al Menú"
+            on_release: app.root.current = "menu"

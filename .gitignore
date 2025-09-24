@@ -35,3 +35,23 @@ venv/
 *~
 # Windows
 Thumbs.db
+
+# Ignorar entorno virtual de Python
+venv/
+__pycache__/
+*.pyc
+
+# Ignorar archivos temporales de Kivy/VSCode
+*.log
+*.db
+*.sqlite3
+.vscode/
+
+# Ignorar compilaciones de Arduino
+*.hex
+*.elf
+*.bin
+
+# Ignorar cosas de sistema
+.DS_Store
+Thumbs.db
